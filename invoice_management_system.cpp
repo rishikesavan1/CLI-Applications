@@ -1,6 +1,8 @@
 #include<iostream>
 #include<vector>
 #include<string>
+#include<limits>
+#include<cstdlib>
 using namespace std;
 
 class InvoiceItem{
@@ -166,11 +168,15 @@ public:
 	}
 	
 	void displayCustomerInvoices(string customerName){
-		int customerId;
+		int customerId = -1;
 		for(const auto& customer:customers){
 			if(customer.getCustomerName() == customerName){
 				customerId = customer.getCustomerId();
 			}
+		}
+		if(customerId == -1){
+			cout << "Customer not found...";
+			return;
 		}
 		cout << endl;
 		cout << "Customer Id : " << customerId << "\tCustomer Name : " << customerName << endl;
@@ -194,6 +200,10 @@ public:
 				targetInvoice = &invoice;
 				customerId = invoice.getCustomerId();
 			}
+		}
+		if(targetInvoice == nullptr){
+			cout << "Invoice Not FOund...";
+			return;
 		}
 		for(const auto& customer : customers){
 			if(customer.getCustomerId() == customerId){
@@ -231,7 +241,6 @@ int main(){
 //    inv.addItemToInvoice(101, InvoiceItem("Mouse", 1, 800));
 //    inv.addItemToInvoice(102, InvoiceItem("Monitor", 2, 15000));
 //    inv.addItemToInvoice(103, InvoiceItem("Keyboard", 1, 1200));
-//
 //    inv.displayInvoices();
 //    inv.displayCustomerInvoices("Rishi");
 //    inv.displayInvoiceDetails(101);
@@ -241,10 +250,18 @@ int main(){
     string customerName, itemName;
     while(true){
     	cout << "\n\n----- Select From the choice -----";
-    	cout <<"\n1. Add a customer \n2. Add an invoice \n3. Add items to an invoice \n4. List all customers \n5. List all invoices \n6. List all invoices of a customer \n7. Display the full details of an invoice \n8. Exit" << endl;
+    	cout <<"\n1. Add a customer \n2. Add an invoice \n3. Add items to an invoice \n4. List all customers \n5. List all invoices \n6. List all invoices of a customer \n7. Display the full details of an invoice \n8. Clear Screen \n9. Exit" << endl;
 		cout << "Enter Your Choice : ";
 		cin >> choice;
-		if(choice == 8){
+		
+		if (cin.fail()) {
+            cout << "Invalid input. Please enter a number." << endl;
+            cin.clear();
+            cin.ignore();
+            continue;
+        }
+                
+		if(choice == 9){
 			cout << "Exiting... \nDone...";
 			break;
 		}
@@ -302,6 +319,10 @@ int main(){
 				cout << "Enter the Invoice Id to Check details : ";
 				cin >> invoiceId;
 				inv.displayInvoiceDetails(invoiceId);
+				break;
+				
+			case 8:
+				system("CLS");
 				break;
 				
 			default:
